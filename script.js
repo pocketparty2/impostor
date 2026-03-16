@@ -13,7 +13,7 @@ const categoryList = document.getElementById("categoryList");
 
 const revealPlayerName = document.getElementById("revealPlayerName");
 const revealCard = document.getElementById("revealCard");
-const revealText = document.getElementById("revealText");
+const revealBackText = document.getElementById("revealBackText");
 const nextPlayerBtn = document.getElementById("nextPlayerBtn");
 
 const discussionStarter = document.getElementById("discussionStarter");
@@ -111,63 +111,47 @@ function loadRevealScreen() {
   const playerName = players[currentRevealIndex];
 
   revealPlayerName.textContent = `Player: ${playerName}`;
-  revealText.textContent = "Hold to reveal";
+  revealBackText.textContent = ""; // reset
   nextPlayerBtn.classList.add("hidden");
+
+  // Reset flip state
+  revealCard.classList.remove("holding");
 }
 
 // ---------------------------
 // HOLD-TO-REVEAL LOGIC
 // ---------------------------
-let holdTimeout = null;
-
-revealCard.addEventListener("mousedown", () => {
-  showRole();
-});
-
-revealCard.addEventListener("mouseup", () => {
-  hideRole();
-});
-
-revealCard.addEventListener("mouseleave", () => {
-  hideRole();
-});
-
-// Touch support
-revealCard.addEventListener("touchstart", () => {
-  showRole();
-});
-
-revealCard.addEventListener("touchend", () => {
-  hideRole();
-});
-
-// ---------------------------
-// SHOW ROLE
-// ---------------------------
 function showRole() {
   const isImpostor = currentRevealIndex === impostorIndex;
 
   if (isImpostor) {
-    revealText.innerHTML = `
+    revealBackText.innerHTML = `
       YOU ARE THE IMPOSTOR<br><br>
       HINT: ${chosenHint}
     `;
   } else {
-    revealText.innerHTML = `
+    revealBackText.innerHTML = `
       WORD: ${chosenWord}<br><br>
       HINT: ${chosenHint}
     `;
   }
 
+  revealCard.classList.add("holding");
   nextPlayerBtn.classList.remove("hidden");
 }
 
-// ---------------------------
-// HIDE ROLE
-// ---------------------------
 function hideRole() {
-  revealText.textContent = "Hold to reveal";
+  revealCard.classList.remove("holding");
 }
+
+// Mouse events
+revealCard.addEventListener("mousedown", showRole);
+revealCard.addEventListener("mouseup", hideRole);
+revealCard.addEventListener("mouseleave", hideRole);
+
+// Touch events
+revealCard.addEventListener("touchstart", showRole);
+revealCard.addEventListener("touchend", hideRole);
 
 // ---------------------------
 // NEXT PLAYER BUTTON
