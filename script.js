@@ -194,22 +194,30 @@ revealCard.addEventListener("touchend", hideRole);
 // NEXT PLAYER (FIXED VERSION)
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
+
+  console.log("Before increment:", currentRevealIndex, "/", players.length);
+
   revealCard.classList.add("slide-out");
 
   setTimeout(() => {
     revealCard.classList.remove("slide-out");
     revealCard.classList.add("slide-in");
 
+    // Move to next player
     currentRevealIndex++;
 
-    // FIX: check BEFORE loading next reveal screen
-    if (currentRevealIndex >= players.length) {
+    console.log("After increment:", currentRevealIndex, "/", players.length);
+
+    // FIX: if we've shown all players, go to discussion
+    if (currentRevealIndex === players.length) {
+
+      console.log("All players revealed. Moving to discussion.");
+
       revealSection.classList.add("hidden");
       discussionSection.classList.remove("hidden");
 
       const starter = players[Math.floor(Math.random() * players.length)];
 
-      // Highlight starter name
       discussionStarter.innerHTML = `
         <span class="starter-highlight">${starter}</span> starts the conversation.
       `;
@@ -217,6 +225,7 @@ nextPlayerBtn.addEventListener("click", () => {
       return;
     }
 
+    // Otherwise load next player
     loadRevealScreen();
 
     setTimeout(() => {
@@ -225,6 +234,7 @@ nextPlayerBtn.addEventListener("click", () => {
 
   }, 250);
 });
+
 
 // ---------------------------
 // RESULTS
