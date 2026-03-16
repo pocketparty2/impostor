@@ -24,12 +24,19 @@
     <button id="startGameBtn">Start Game</button>
   </section>
 
-  <!-- Reveal Screen (one player at a time) -->
+  <!-- Reveal Screen -->
   <section id="reveal" class="hidden">
     <h2 id="revealPlayerName"></h2>
 
     <div id="revealCard" class="reveal-card">
-      <p id="revealText">Hold to reveal</p>
+      <div class="reveal-inner">
+        <div class="reveal-front">
+          Hold to reveal
+        </div>
+        <div class="reveal-back" id="revealBackText">
+          <!-- Filled by JS -->
+        </div>
+      </div>
     </div>
 
     <button id="nextPlayerBtn" class="hidden">Next Player</button>
@@ -50,7 +57,6 @@
     <button id="playAgainBtn">Play Again</button>
   </section>
 
-  <!-- Scripts -->
   <script src="words.js"></script>
   <script src="script.js"></script>
 
