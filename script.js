@@ -9,6 +9,8 @@ const resultsSection = document.getElementById("results");
 const playerNamesInput = document.getElementById("playerNames");
 const startGameBtn = document.getElementById("startGameBtn");
 
+const categoryList = document.getElementById("categoryList");
+
 const revealPlayerName = document.getElementById("revealPlayerName");
 const revealCard = document.getElementById("revealCard");
 const revealText = document.getElementById("revealText");
@@ -32,6 +34,30 @@ let chosenWord = null;
 let chosenHint = null;
 
 // ---------------------------
+// BUILD CATEGORY CHECKBOXES
+// ---------------------------
+function buildCategoryList() {
+  const categories = Object.keys(WORDS);
+
+  categories.forEach(cat => {
+    const wrapper = document.createElement("label");
+    wrapper.style.display = "block";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = cat;
+    checkbox.checked = true;
+
+    wrapper.appendChild(checkbox);
+    wrapper.append(` ${cat}`);
+
+    categoryList.appendChild(wrapper);
+  });
+}
+
+buildCategoryList();
+
+// ---------------------------
 // START GAME
 // ---------------------------
 startGameBtn.addEventListener("click", () => {
@@ -52,12 +78,19 @@ startGameBtn.addEventListener("click", () => {
     return;
   }
 
+  // Get selected categories
+  const selectedCategories = [...categoryList.querySelectorAll("input:checked")].map(c => c.value);
+
+  if (selectedCategories.length === 0) {
+    alert("Select at least one category.");
+    return;
+  }
+
   // Pick impostor
   impostorIndex = Math.floor(Math.random() * players.length);
 
   // Pick random category + word
-  const categories = Object.keys(WORDS);
-  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  const randomCategory = selectedCategories[Math.floor(Math.random() * selectedCategories.length)];
   const wordData = WORDS[randomCategory][Math.floor(Math.random() * WORDS[randomCategory].length)];
 
   chosenWord = wordData.word;
@@ -78,30 +111,63 @@ function loadRevealScreen() {
   const playerName = players[currentRevealIndex];
 
   revealPlayerName.textContent = `Player: ${playerName}`;
-  revealText.textContent = "Click to reveal";
+  revealText.textContent = "Hold to reveal";
   nextPlayerBtn.classList.add("hidden");
-
-  // Reset card state
-  revealCard.dataset.revealed = "false";
 }
 
 // ---------------------------
-// REVEAL CARD CLICK
+// HOLD-TO-REVEAL LOGIC
 // ---------------------------
-revealCard.addEventListener("click", () => {
-  if (revealCard.dataset.revealed === "true") return;
+let holdTimeout = null;
 
+revealCard.addEventListener("mousedown", () => {
+  showRole();
+});
+
+revealCard.addEventListener("mouseup", () => {
+  hideRole();
+});
+
+revealCard.addEventListener("mouseleave", () => {
+  hideRole();
+});
+
+// Touch support
+revealCard.addEventListener("touchstart", () => {
+  showRole();
+});
+
+revealCard.addEventListener("touchend", () => {
+  hideRole();
+});
+
+// ---------------------------
+// SHOW ROLE
+// ---------------------------
+function showRole() {
   const isImpostor = currentRevealIndex === impostorIndex;
 
   if (isImpostor) {
-    revealText.textContent = "YOU ARE THE IMPOSTOR";
+    revealText.innerHTML = `
+      YOU ARE THE IMPOSTOR<br><br>
+      HINT: ${chosenHint}
+    `;
   } else {
-    revealText.textContent = `WORD: ${chosenWord}`;
+    revealText.innerHTML = `
+      WORD: ${chosenWord}<br><br>
+      HINT: ${chosenHint}
+    `;
   }
 
-  revealCard.dataset.revealed = "true";
   nextPlayerBtn.classList.remove("hidden");
-});
+}
+
+// ---------------------------
+// HIDE ROLE
+// ---------------------------
+function hideRole() {
+  revealText.textContent = "Hold to reveal";
+}
 
 // ---------------------------
 // NEXT PLAYER BUTTON
