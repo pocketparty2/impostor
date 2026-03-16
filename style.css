@@ -1,7 +1,7 @@
 /* Light Mode Base */
 body {
   font-family: Arial, sans-serif;
-  background: #f2f2f7;
+  background: #ffffff; /* full white backdrop */
   color: #222;
   text-align: center;
   margin: 0;
@@ -14,12 +14,9 @@ h1 {
 }
 
 section {
-  margin: 20px auto;
+  margin: 40px auto;
   max-width: 600px;
-  background: #ffffff;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 /* Inputs */
@@ -80,10 +77,14 @@ button:active {
 .reveal-card {
   width: 80%;
   max-width: 400px;
-  height: 220px;
-  margin: 20px auto;
+  height: 200px;
+  margin: 20px auto 40px auto; /* extra bottom spacing */
   perspective: 1000px;
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Flip Inner */
@@ -93,7 +94,7 @@ button:active {
   position: relative;
   transition: transform 0.25s ease;
   transform-style: preserve-3d;
-  transform-origin: center center; /* FIXED */
+  transform-origin: center center; /* perfectly centered pivot */
 }
 
 /* Flip when holding */
@@ -119,21 +120,26 @@ button:active {
   color: #fff;
 }
 
-/* Front (default) */
-.reveal-front {
-  background: #e5e5ea;
-  color: #333;
-}
-
-/* Back (revealed) */
+/* Back face */
 .reveal-back {
   transform: rotateY(180deg);
 }
 
-/* Discussion + Results */
-.note {
-  font-size: 14px;
-  color: #555;
-  margin-top: 15px;
+/* Slide Animations */
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-120%); }
 }
 
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(120%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.reveal-card.slide-out {
+  animation: slideOut 0.25s ease forwards;
+}
+
+.reveal-card.slide-in {
+  animation: slideIn 0.25s ease forwards;
+}
