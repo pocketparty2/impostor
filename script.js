@@ -6,9 +6,10 @@ const revealSection = document.getElementById("reveal");
 const discussionSection = document.getElementById("discussion");
 const resultsSection = document.getElementById("results");
 
-const playerNamesInput = document.getElementById("playerNames");
-const startGameBtn = document.getElementById("startGameBtn");
+const playerList = document.getElementById("playerList");
+const addPlayerBtn = document.getElementById("addPlayerBtn");
 
+const startGameBtn = document.getElementById("startGameBtn");
 const categoryList = document.getElementById("categoryList");
 
 const revealPlayerName = document.getElementById("revealPlayerName");
@@ -46,6 +47,43 @@ function randomColor() {
 }
 
 // ---------------------------
+// PLAYER LIST UI
+// ---------------------------
+function renderPlayers() {
+  playerList.innerHTML = "";
+
+  players.forEach((name, index) => {
+    const row = document.createElement("div");
+    row.className = "player-row";
+
+    const label = document.createElement("span");
+    label.textContent = name;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "remove-player";
+    removeBtn.textContent = "X";
+
+    removeBtn.addEventListener("click", () => {
+      players.splice(index, 1);
+      renderPlayers();
+    });
+
+    row.appendChild(label);
+    row.appendChild(removeBtn);
+    playerList.appendChild(row);
+  });
+}
+
+addPlayerBtn.addEventListener("click", () => {
+  const name = prompt("Enter player name:");
+
+  if (!name || !name.trim()) return;
+
+  players.push(name.trim());
+  renderPlayers();
+});
+
+// ---------------------------
 // BUILD CATEGORY CHECKBOXES
 // ---------------------------
 function buildCategoryList() {
@@ -73,24 +111,11 @@ buildCategoryList();
 // START GAME
 // ---------------------------
 startGameBtn.addEventListener("click", () => {
-  const namesRaw = playerNamesInput.value.trim();
-
-  if (!namesRaw) {
-    alert("Enter player names first!");
-    return;
-  }
-
-  players = namesRaw
-    .split(",")
-    .map(n => n.trim())
-    .filter(n => n.length > 0);
-
   if (players.length < 3) {
     alert("You need at least 3 players.");
     return;
   }
 
-  // Get selected categories
   const selectedCategories = [...categoryList.querySelectorAll("input:checked")].map(c => c.value);
 
   if (selectedCategories.length === 0) {
@@ -98,17 +123,14 @@ startGameBtn.addEventListener("click", () => {
     return;
   }
 
-  // Pick impostor
   impostorIndex = Math.floor(Math.random() * players.length);
 
-  // Pick random category + word
   const randomCategory = selectedCategories[Math.floor(Math.random() * selectedCategories.length)];
   const wordData = WORDS[randomCategory][Math.floor(Math.random() * WORDS[randomCategory].length)];
 
   chosenWord = wordData.word;
   chosenHint = wordData.hint;
 
-  // Move to reveal phase
   setupSection.classList.add("hidden");
   revealSection.classList.remove("hidden");
 
@@ -117,7 +139,7 @@ startGameBtn.addEventListener("click", () => {
 });
 
 // ---------------------------
-// LOAD REVEAL SCREEN FOR PLAYER
+// LOAD REVEAL SCREEN
 // ---------------------------
 function loadRevealScreen() {
   const playerName = players[currentRevealIndex];
@@ -125,10 +147,8 @@ function loadRevealScreen() {
   revealPlayerName.textContent = `Player: ${playerName}`;
   revealBackText.textContent = "";
 
-  // Reset flip state
   revealCard.classList.remove("holding");
 
-  // Assign random colors to this player's card
   const front = document.querySelector(".reveal-front");
   const back = document.querySelector(".reveal-back");
 
@@ -136,12 +156,11 @@ function loadRevealScreen() {
   front.style.background = color;
   back.style.background = color;
 
-  // Next button always visible
   nextPlayerBtn.classList.remove("hidden");
 }
 
 // ---------------------------
-// HOLD-TO-REVEAL LOGIC
+// HOLD-TO-REVEAL
 // ---------------------------
 function showRole() {
   const isImpostor = currentRevealIndex === impostorIndex;
@@ -164,20 +183,17 @@ function hideRole() {
   revealCard.classList.remove("holding");
 }
 
-// Mouse events
 revealCard.addEventListener("mousedown", showRole);
 revealCard.addEventListener("mouseup", hideRole);
 revealCard.addEventListener("mouseleave", hideRole);
 
-// Touch events
 revealCard.addEventListener("touchstart", showRole);
 revealCard.addEventListener("touchend", hideRole);
 
 // ---------------------------
-// NEXT PLAYER BUTTON
+// NEXT PLAYER
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
-  // Slide out animation
   revealCard.classList.add("slide-out");
 
   setTimeout(() => {
@@ -205,7 +221,7 @@ nextPlayerBtn.addEventListener("click", () => {
 });
 
 // ---------------------------
-// REVEAL RESULTS
+// RESULTS
 // ---------------------------
 revealResultsBtn.addEventListener("click", () => {
   discussionSection.classList.add("hidden");
@@ -222,5 +238,6 @@ playAgainBtn.addEventListener("click", () => {
   resultsSection.classList.add("hidden");
   setupSection.classList.remove("hidden");
 
-  playerNamesInput.value = "";
+  players = [];
+  renderPlayers();
 });
