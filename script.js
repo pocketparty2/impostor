@@ -177,20 +177,31 @@ revealCard.addEventListener("touchend", hideRole);
 // NEXT PLAYER BUTTON
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
-  currentRevealIndex++;
+  // Slide out animation
+  revealCard.classList.add("slide-out");
 
-  if (currentRevealIndex >= players.length) {
-    // Move to discussion phase
-    revealSection.classList.add("hidden");
-    discussionSection.classList.remove("hidden");
+  setTimeout(() => {
+    revealCard.classList.remove("slide-out");
+    revealCard.classList.add("slide-in");
 
-    const starter = players[Math.floor(Math.random() * players.length)];
-    discussionStarter.textContent = `${starter} starts the conversation.`;
+    currentRevealIndex++;
 
-    return;
-  }
+    if (currentRevealIndex >= players.length) {
+      revealSection.classList.add("hidden");
+      discussionSection.classList.remove("hidden");
 
-  loadRevealScreen();
+      const starter = players[Math.floor(Math.random() * players.length)];
+      discussionStarter.textContent = `${starter} starts the conversation.`;
+      return;
+    }
+
+    loadRevealScreen();
+
+    setTimeout(() => {
+      revealCard.classList.remove("slide-in");
+    }, 250);
+
+  }, 250);
 });
 
 // ---------------------------
