@@ -58,7 +58,7 @@ section {
 -------------------------------------------------- */
 
 #playerList {
-  margin: 20px 0 80px 0;
+  margin: 20px 0 20px 0;   /* FIXED: removed huge bottom gap */
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -138,15 +138,19 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 10px;   /* FIXED: removed huge top gap */
   height: 100%;
+}
+
+#reveal h2 {
+  margin: 10px 0;      /* FIXED: tighter spacing */
 }
 
 .reveal-card {
   width: 80%;
   max-width: 300px;
   height: 420px; /* vertical card */
-  margin: 20px auto 60px auto;
+  margin: 10px auto 40px auto; /* tightened spacing */
   perspective: 1000px;
   cursor: pointer;
 
