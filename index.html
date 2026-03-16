@@ -21,15 +21,30 @@
     <button id="startGameBtn">Start Game</button>
   </section>
 
-  <!-- Game Screen -->
-  <section id="game" class="hidden">
-    <h2>Players</h2>
-    <div id="playersContainer"></div>
+  <!-- Reveal Screen (one player at a time) -->
+  <section id="reveal" class="hidden">
+    <h2 id="revealPlayerName"></h2>
 
-    <p class="note">
-      Each player clicks their card to reveal their word.  
-      Everyone gets the same word except the impostor, who only sees a hint.
-    </p>
+    <div id="revealCard" class="reveal-card">
+      <p id="revealText">Click to reveal</p>
+    </div>
+
+    <button id="nextPlayerBtn" class="hidden">Next Player</button>
+  </section>
+
+  <!-- Discussion Screen -->
+  <section id="discussion" class="hidden">
+    <h2>Game Started!</h2>
+    <p id="discussionStarter"></p>
+    <button id="revealResultsBtn">Reveal Impostor & Word</button>
+  </section>
+
+  <!-- Results Screen -->
+  <section id="results" class="hidden">
+    <h2>Results</h2>
+    <p id="finalWord"></p>
+    <p id="finalImpostor"></p>
+    <button id="playAgainBtn">Play Again</button>
   </section>
 
   <!-- Scripts -->
