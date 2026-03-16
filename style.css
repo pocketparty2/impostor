@@ -2,7 +2,6 @@
    GLOBAL MOBILE BEHAVIOR
 -------------------------------------------------- */
 
-/* Disable text selection everywhere */
 * {
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -10,20 +9,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Disable long-press menu on iOS */
 html, body {
   -webkit-touch-callout: none;
-  touch-action: manipulation; /* disables pinch zoom */
+  touch-action: manipulation;
+  height: 100%;
+  margin: 0;
 }
 
-/* FULL SCREEN LOCK — no scrolling at all */
-html, body {
-  overflow: hidden;     /* no scroll */
-  height: 100%;
-  width: 100%;
-  position: fixed;      /* locks viewport */
-  top: 0;
-  left: 0;
+/* No scrolling */
+body {
+  overflow: hidden;
 }
 
 /* --------------------------------------------------
@@ -35,22 +30,33 @@ body {
   background: #ffffff;
   color: #222;
   text-align: center;
-  margin: 0;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 20px 0;
+  box-sizing: border-box;
 }
 
 h1 {
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
   color: #111;
 }
 
-section {
-  margin: 0 auto;
-  max-width: 600px;
-  padding: 20px;
+/* Container for all screens */
+#screens {
+  position: relative;
+  flex: 1;
   width: 100%;
+  max-width: 600px;
   box-sizing: border-box;
-  height: 100%;
+}
+
+/* Each screen fills the container */
+section {
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* --------------------------------------------------
@@ -58,7 +64,7 @@ section {
 -------------------------------------------------- */
 
 #playerList {
-  margin: 20px 0 20px 0;   /* FIXED: removed huge bottom gap */
+  margin: 20px 0 20px 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -89,17 +95,17 @@ section {
   cursor: pointer;
 }
 
-/* Add Player button fixed at bottom */
+/* Add Player button pinned near bottom of setup screen */
 .bottom-button {
-  position: sticky;
-  bottom: 0;
-  width: 100%;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
   padding: 16px;
   background: #d4ff00;
   color: #000;
   font-size: 20px;
   border-radius: 8px;
-  margin-top: 10px;
 }
 
 /* --------------------------------------------------
@@ -130,6 +136,15 @@ button:active {
   display: none;
 }
 
+/* Highlight for starter name */
+.starter-highlight {
+  background: #d4ff00;
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
 /* --------------------------------------------------
    REVEAL CARD (VERTICAL)
 -------------------------------------------------- */
@@ -138,19 +153,18 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;   /* FIXED: removed huge top gap */
-  height: 100%;
+  padding-top: 10px;
 }
 
 #reveal h2 {
-  margin: 10px 0;      /* FIXED: tighter spacing */
+  margin: 10px 0;
 }
 
 .reveal-card {
   width: 80%;
   max-width: 300px;
-  height: 420px; /* vertical card */
-  margin: 10px auto 40px auto; /* tightened spacing */
+  height: 420px;
+  margin: 10px auto 40px auto;
   perspective: 1000px;
   cursor: pointer;
 
@@ -214,3 +228,4 @@ button:active {
 .reveal-card.slide-in {
   animation: slideIn 0.25s ease forwards;
 }
+
