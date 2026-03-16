@@ -1,6 +1,5 @@
+// script.js
 const playerNamesInput = document.getElementById("playerNames");
-const commonWordInput = document.getElementById("commonWord");
-const impostorHintInput = document.getElementById("impostorHint");
 const startGameBtn = document.getElementById("startGameBtn");
 const setupSection = document.getElementById("setup");
 const gameSection = document.getElementById("game");
@@ -8,15 +7,15 @@ const playersContainer = document.getElementById("playersContainer");
 
 let players = [];
 let impostorIndex = null;
-let revealed = {}; // track which players have revealed
+let revealed = {};
+let chosenWord = null;
+let chosenHint = null;
 
 startGameBtn.addEventListener("click", () => {
   const namesRaw = playerNamesInput.value.trim();
-  const commonWord = commonWordInput.value.trim();
-  const impostorHint = impostorHintInput.value.trim();
 
-  if (!namesRaw || !commonWord || !impostorHint) {
-    alert("Fill in all fields first!");
+  if (!namesRaw) {
+    alert("Enter player names first!");
     return;
   }
 
@@ -26,7 +25,7 @@ startGameBtn.addEventListener("click", () => {
     .filter(n => n.length > 0);
 
   if (names.length < 3) {
-    alert("You need at least 3 players for this to be fun.");
+    alert("You need at least 3 players.");
     return;
   }
 
@@ -34,13 +33,22 @@ startGameBtn.addEventListener("click", () => {
   impostorIndex = Math.floor(Math.random() * players.length);
   revealed = {};
 
+  // Pick random category
+  const categories = Object.keys(WORDS);
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+  // Pick random word from that category
+  const wordData = WORDS[randomCategory][Math.floor(Math.random() * WORDS[randomCategory].length)];
+  chosenWord = wordData.word;
+  chosenHint = wordData.hint;
+
   setupSection.classList.add("hidden");
   gameSection.classList.remove("hidden");
 
-  renderPlayerCards(commonWord, impostorHint);
+  renderPlayerCards();
 });
 
-function renderPlayerCards(commonWord, impostorHint) {
+function renderPlayerCards() {
   playersContainer.innerHTML = "";
 
   players.forEach((name, index) => {
@@ -63,15 +71,13 @@ function renderPlayerCards(commonWord, impostorHint) {
       const i = parseInt(card.dataset.index, 10);
 
       if (!revealed[i]) {
-        // First click: show word/hint
         if (i === impostorIndex) {
-          wordEl.textContent = `Hint: ${impostorHint}`;
+          wordEl.textContent = `Hint: ${chosenHint}`;
         } else {
-          wordEl.textContent = `Word: ${commonWord}`;
+          wordEl.textContent = `Word: ${chosenWord}`;
         }
         revealed[i] = true;
       } else {
-        // Second click: hide again (optional)
         wordEl.textContent = "Click to reveal";
         revealed[i] = false;
       }
