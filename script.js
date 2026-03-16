@@ -34,6 +34,18 @@ let chosenWord = null;
 let chosenHint = null;
 
 // ---------------------------
+// RANDOM CARD COLORS
+// ---------------------------
+function randomColor() {
+  const colors = [
+    "#ff6b6b", "#ff9f43", "#feca57", "#1dd1a1",
+    "#48dbfb", "#54a0ff", "#5f27cd", "#c56cf0",
+    "#ff9ff3", "#f368e0"
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// ---------------------------
 // BUILD CATEGORY CHECKBOXES
 // ---------------------------
 function buildCategoryList() {
@@ -111,11 +123,21 @@ function loadRevealScreen() {
   const playerName = players[currentRevealIndex];
 
   revealPlayerName.textContent = `Player: ${playerName}`;
-  revealBackText.textContent = ""; // reset
-  nextPlayerBtn.classList.add("hidden");
+  revealBackText.textContent = "";
 
   // Reset flip state
   revealCard.classList.remove("holding");
+
+  // Assign random colors to this player's card
+  const front = document.querySelector(".reveal-front");
+  const back = document.querySelector(".reveal-back");
+
+  const color = randomColor();
+  front.style.background = color;
+  back.style.background = color;
+
+  // Next button always visible
+  nextPlayerBtn.classList.remove("hidden");
 }
 
 // ---------------------------
@@ -131,13 +153,11 @@ function showRole() {
     `;
   } else {
     revealBackText.innerHTML = `
-      WORD: ${chosenWord}<br><br>
-      HINT: ${chosenHint}
+      WORD: ${chosenWord}
     `;
   }
 
   revealCard.classList.add("holding");
-  nextPlayerBtn.classList.remove("hidden");
 }
 
 function hideRole() {
