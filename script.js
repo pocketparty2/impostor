@@ -190,23 +190,26 @@ revealCard.addEventListener("touchstart", showRole);
 revealCard.addEventListener("touchend", hideRole);
 
 // ---------------------------
-// NEXT PLAYER (FINAL FIXED VERSION)
+// NEXT PLAYER — FINAL FIX
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
 
   revealCard.classList.add("slide-out");
 
   setTimeout(() => {
-    revealCard.classList.remove("slide-out");
-    revealCard.classList.add("slide-in");
 
     currentRevealIndex++;
 
-    // If we've shown all players → go to discussion
+    // If all players are done → switch screens immediately
     if (currentRevealIndex === players.length) {
 
+      // Hide reveal screen COMPLETELY
       revealSection.classList.add("hidden");
-      nextPlayerBtn.style.display = "none"; // disable button completely
+
+      // Disable the button so it cannot be tapped again
+      nextPlayerBtn.style.display = "none";
+
+      // Show discussion screen
       discussionSection.classList.remove("hidden");
 
       const starter = players[Math.floor(Math.random() * players.length)];
@@ -215,10 +218,13 @@ nextPlayerBtn.addEventListener("click", () => {
         <span class="starter-highlight">${starter}</span> starts the conversation.
       `;
 
-      return;
+      return; // STOP — do NOT load another card
     }
 
     // Otherwise load next player
+    revealCard.classList.remove("slide-out");
+    revealCard.classList.add("slide-in");
+
     loadRevealScreen();
 
     setTimeout(() => {
