@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- Critical for mobile layout + no zoom -->
+  <!-- Mobile perfect scaling + no zoom -->
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,10 +18,9 @@
   <section id="setup">
     <h2>Game Setup</h2>
 
-    <label>
-      Player names (comma separated):
-      <input type="text" id="playerNames" placeholder="Alice,Bob,Charlie" />
-    </label>
+    <div id="playerList"></div>
+
+    <button id="addPlayerBtn" class="bottom-button">+ Add Player</button>
 
     <h3>Select Categories:</h3>
     <div id="categoryList"></div>
@@ -38,9 +37,7 @@
         <div class="reveal-front">
           Hold to reveal
         </div>
-        <div class="reveal-back" id="revealBackText">
-          <!-- Filled by JS -->
-        </div>
+        <div class="reveal-back" id="revealBackText"></div>
       </div>
     </div>
 
