@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Impostor!</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Impostor!</h1>
+
+  <section id="setup">
+    <h2>Game setup</h2>
+    <label>
+      Player names (comma separated):
+      <input type="text" id="playerNames" placeholder="Alice,Bob,Charlie" />
+    </label>
+    <br />
+
+    <label>
+      Common word:
+      <input type="text" id="commonWord" placeholder="e.g. Pizza" />
+    </label>
+    <br />
+
+    <label>
+      Impostor hint:
+      <input type="text" id="impostorHint" placeholder="e.g. Italian food" />
+    </label>
+    <br />
+
+    <button id="startGameBtn">Start game</button>
+  </section>
+
+  <section id="game" class="hidden">
+    <h2>Players</h2>
+    <div id="playersContainer"></div>
+    <p class="note">
+      Each player clicks their own card to see their word.  
+      Everyone gets the common word except the impostor, who gets only the hint.
+    </p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
