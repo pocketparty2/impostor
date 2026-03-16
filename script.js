@@ -135,6 +135,7 @@ startGameBtn.addEventListener("click", () => {
   revealSection.classList.remove("hidden");
 
   currentRevealIndex = 0;
+  nextPlayerBtn.style.display = "block"; // ensure visible for new game
   loadRevealScreen();
 });
 
@@ -155,8 +156,6 @@ function loadRevealScreen() {
   const color = randomColor();
   front.style.background = color;
   back.style.background = color;
-
-  nextPlayerBtn.classList.remove("hidden");
 }
 
 // ---------------------------
@@ -191,11 +190,9 @@ revealCard.addEventListener("touchstart", showRole);
 revealCard.addEventListener("touchend", hideRole);
 
 // ---------------------------
-// NEXT PLAYER (FIXED VERSION)
+// NEXT PLAYER (FINAL FIXED VERSION)
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
-
-  console.log("Before increment:", currentRevealIndex, "/", players.length);
 
   revealCard.classList.add("slide-out");
 
@@ -203,17 +200,13 @@ nextPlayerBtn.addEventListener("click", () => {
     revealCard.classList.remove("slide-out");
     revealCard.classList.add("slide-in");
 
-    // Move to next player
     currentRevealIndex++;
 
-    console.log("After increment:", currentRevealIndex, "/", players.length);
-
-    // FIX: if we've shown all players, go to discussion
+    // If we've shown all players → go to discussion
     if (currentRevealIndex === players.length) {
 
-      console.log("All players revealed. Moving to discussion.");
-
       revealSection.classList.add("hidden");
+      nextPlayerBtn.style.display = "none"; // disable button completely
       discussionSection.classList.remove("hidden");
 
       const starter = players[Math.floor(Math.random() * players.length)];
@@ -235,7 +228,6 @@ nextPlayerBtn.addEventListener("click", () => {
   }, 250);
 });
 
-
 // ---------------------------
 // RESULTS
 // ---------------------------
@@ -256,4 +248,6 @@ playAgainBtn.addEventListener("click", () => {
 
   players = [];
   renderPlayers();
+
+  nextPlayerBtn.style.display = "block"; // re-enable for next game
 });
