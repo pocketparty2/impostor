@@ -12,51 +12,55 @@
 </head>
 <body>
 
-  <!-- Setup Screen -->
-  <section id="setup">
-    <h1>Impostor!</h1>
-    <h2>Game Setup</h2>
+  <h1>Impostor!</h1>
 
-    <div id="playerList"></div>
+  <!-- All screens live inside this container -->
+  <main id="screens">
+    <!-- Setup Screen -->
+    <section id="setup">
+      <h2>Game Setup</h2>
 
-    <button id="addPlayerBtn" class="bottom-button">+ Add Player</button>
+      <div id="playerList"></div>
 
-    <h3>Select Categories:</h3>
-    <div id="categoryList"></div>
+      <button id="addPlayerBtn" class="bottom-button">+ Add Player</button>
 
-    <button id="startGameBtn">Start Game</button>
-  </section>
+      <h3>Select Categories:</h3>
+      <div id="categoryList"></div>
 
-  <!-- Reveal Screen -->
-  <section id="reveal" class="hidden">
-    <h2 id="revealPlayerName"></h2>
+      <button id="startGameBtn">Start Game</button>
+    </section>
 
-    <div id="revealCard" class="reveal-card">
-      <div class="reveal-inner">
-        <div class="reveal-front">
-          Hold to reveal
+    <!-- Reveal Screen -->
+    <section id="reveal" class="hidden">
+      <h2 id="revealPlayerName"></h2>
+
+      <div id="revealCard" class="reveal-card">
+        <div class="reveal-inner">
+          <div class="reveal-front">
+            Hold to reveal
+          </div>
+          <div class="reveal-back" id="revealBackText"></div>
         </div>
-        <div class="reveal-back" id="revealBackText"></div>
       </div>
-    </div>
 
-    <button id="nextPlayerBtn">Next Player</button>
-  </section>
+      <button id="nextPlayerBtn">Next Player</button>
+    </section>
 
-  <!-- Discussion Screen -->
-  <section id="discussion" class="hidden">
-    <h2>Game Started!</h2>
-    <p id="discussionStarter"></p>
-    <button id="revealResultsBtn">Reveal Impostor & Word</button>
-  </section>
+    <!-- Discussion Screen -->
+    <section id="discussion" class="hidden">
+      <h2>Game Started!</h2>
+      <p id="discussionStarter"></p>
+      <button id="revealResultsBtn">Reveal Impostor & Word</button>
+    </section>
 
-  <!-- Results Screen -->
-  <section id="results" class="hidden">
-    <h2>Results</h2>
-    <p id="finalWord"></p>
-    <p id="finalImpostor"></p>
-    <button id="playAgainBtn">Play Again</button>
-  </section>
+    <!-- Results Screen -->
+    <section id="results" class="hidden">
+      <h2>Results</h2>
+      <p id="finalWord"></p>
+      <p id="finalImpostor"></p>
+      <button id="playAgainBtn">Play Again</button>
+    </section>
+  </main>
 
   <script src="words.js"></script>
   <script src="script.js"></script>
