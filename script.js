@@ -135,7 +135,7 @@ startGameBtn.addEventListener("click", () => {
   revealSection.classList.remove("hidden");
 
   currentRevealIndex = 0;
-  nextPlayerBtn.style.display = "block"; // ensure visible for new game
+  nextPlayerBtn.style.display = "block";
   loadRevealScreen();
 });
 
@@ -190,35 +190,27 @@ revealCard.addEventListener("touchstart", showRole);
 revealCard.addEventListener("touchend", hideRole);
 
 // ---------------------------
-// NEXT PLAYER — FINAL FIX
+// NEXT PLAYER
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
-
   revealCard.classList.add("slide-out");
 
   setTimeout(() => {
-
     currentRevealIndex++;
 
-    // If all players are done → switch screens immediately
+    // All players done → go to discussion
     if (currentRevealIndex === players.length) {
-
-      // Hide reveal screen COMPLETELY
       revealSection.classList.add("hidden");
-
-      // Disable the button so it cannot be tapped again
       nextPlayerBtn.style.display = "none";
 
-      // Show discussion screen
       discussionSection.classList.remove("hidden");
 
       const starter = players[Math.floor(Math.random() * players.length)];
-
       discussionStarter.innerHTML = `
         <span class="starter-highlight">${starter}</span> starts the conversation.
       `;
 
-      return; // STOP — do NOT load another card
+      return;
     }
 
     // Otherwise load next player
@@ -230,7 +222,6 @@ nextPlayerBtn.addEventListener("click", () => {
     setTimeout(() => {
       revealCard.classList.remove("slide-in");
     }, 250);
-
   }, 250);
 });
 
@@ -255,5 +246,5 @@ playAgainBtn.addEventListener("click", () => {
   players = [];
   renderPlayers();
 
-  nextPlayerBtn.style.display = "block"; // re-enable for next game
+  nextPlayerBtn.style.display = "block";
 });
