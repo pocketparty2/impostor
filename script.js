@@ -191,7 +191,7 @@ revealCard.addEventListener("touchstart", showRole);
 revealCard.addEventListener("touchend", hideRole);
 
 // ---------------------------
-// NEXT PLAYER
+// NEXT PLAYER (FIXED VERSION)
 // ---------------------------
 nextPlayerBtn.addEventListener("click", () => {
   revealCard.classList.add("slide-out");
@@ -202,12 +202,18 @@ nextPlayerBtn.addEventListener("click", () => {
 
     currentRevealIndex++;
 
+    // FIX: check BEFORE loading next reveal screen
     if (currentRevealIndex >= players.length) {
       revealSection.classList.add("hidden");
       discussionSection.classList.remove("hidden");
 
       const starter = players[Math.floor(Math.random() * players.length)];
-      discussionStarter.textContent = `${starter} starts the conversation.`;
+
+      // Highlight starter name
+      discussionStarter.innerHTML = `
+        <span class="starter-highlight">${starter}</span> starts the conversation.
+      `;
+
       return;
     }
 
